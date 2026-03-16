@@ -1,37 +1,42 @@
 @startuml
+!theme plain
 left to right direction
 
 actor Student as s
 
 rectangle "Classhub" {
-    usecase "add new source" as ANS
+    rectangle "Source Management" {
+        usecase "Add New Source" as ANS
+        usecase "Add Repo" as AREPO
+        usecase "Add Drive (public)" as ADRIVE
+        usecase "Add Classroom" as ACLASSROOM
 
-    usecase "sync source" as SS
-    usecase "sync all sources" as SAS
-    usecase "share sources" as SSS
-    usecase "navigate between sources" as NBS
-    usecase "add document to local space" as AD
-    usecase "open documents" as OD
+        usecase "Sync Source" as SS
+        usecase "Sync All Sources" as SAS
 
-    usecase "add repo as a source" as AREPO
-    usecase "add drive(public) as a source" as ADRIVE
-    usecase "add classroom as a source" as ACLASSROOM
+        usecase "Share Sources" as SSS
+    }
 
-    usecase "google auth/login" as AUTH
+    rectangle "Local Document Management" {
+        usecase "Navigate Documents" as ND
+        usecase "Open Document" as OD
+        usecase "Add new Document to Local Document Space" as AD
+    }
+
+    usecase "Google Auth" as AUTH
 }
 
-s ---> ANS
-
+s --> ANS
 s --> SS
 s --> SAS
-s --> NBS
-s --> AD
-s --> OD
 s --> SSS
+s --> ND
+s --> OD
+s --> AD
 
-AREPO ..> ANS  : <<extend>>
-ADRIVE ..> ANS  : <<extend>>
-ACLASSROOM ..> ANS  : <<extend>>
-
+AREPO      .up.> ANS  : <<extend>>
+ADRIVE     .up.> ANS  : <<extend>>
+ACLASSROOM .up.> ANS  : <<extend>>
 ACLASSROOM ..> AUTH : <<include>>
 @enduml
+
