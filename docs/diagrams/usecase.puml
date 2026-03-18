@@ -13,14 +13,16 @@ rectangle "Classhub" {
 
         usecase "Sync Source" as SS
         usecase "Sync All Sources" as SAS
+        usecase "view sync status" as VSS
 
         usecase "Share Sources" as SSS
+        note right of SSS : share as a URI containing a string of all sources URLs\nopens directly in the app
     }
 
-    rectangle "Local Document Management" {
-        usecase "Navigate Documents" as ND
-        usecase "Open Document" as OD
-        usecase "Add new Document to Local Document Space" as AD
+    rectangle "File Management" {
+        usecase "Create local folders and Documents" as CFAD
+        usecase "Browse & Open Documents" as BND
+        usecase "Delete File / Folder" as DFF
     }
 
     usecase "Google Auth" as AUTH
@@ -29,14 +31,16 @@ rectangle "Classhub" {
 s --> ANS
 s --> SS
 s --> SAS
+s --> VSS
 s --> SSS
-s --> ND
-s --> OD
-s --> AD
+s --> BND
+s --> CFAD
+s --> DFF
+
+SAS .> SS : <<include>>
 
 AREPO      .up.> ANS  : <<extend>>
 ADRIVE     .up.> ANS  : <<extend>>
 ACLASSROOM .up.> ANS  : <<extend>>
 ACLASSROOM ..> AUTH : <<include>>
 @enduml
-
