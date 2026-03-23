@@ -1,0 +1,35 @@
+@startuml
+!theme plain
+actor Student as s
+participant "App UI" as UI
+participant "GitHub REST API" as GH
+participant "Local Filesystem" as FS
+
+s -> UI : enters GitHub repo URL
+UI -> GH : GET /repos/{owner}/{repo}
+alt repo not found / invalid URL
+    GH --> UI : 404 / error
+    UI --> s : show error message
+else valid repo
+    GH --> UI : repo metadata (name, default branch)
+    UI --> s : show confirmation dialog\n(folder name = repo name, editable)\n(☑ Download immediately)
+    s -> UI : optionally renames folder
+    s -> UI : confirms
+    UI -> FS : create /{folder_name}/
+    UI -> FS : create /{folder_name}/.source/source.json\n(type: github, url, branch, folder_name)
+    alt Download immediately (default)
+        UI -> GH : GET /repos/{owner}/{repo}/git/trees/{branch}?recursive=1
+        GH --> UI : full file tree
+        loop for each file
+            UI -> GH : GET raw file content
+            GH --> UI : file bytes
+            UI -> FS : write file to /{folder_name}/...
+        end
+        UI -> FS : write /{folder_name}/.source/manifest.json\n(file paths + hashes)
+        UI --> s : source added & synced ✓
+    else Register only
+        UI -> FS : write /{folder_name}/.source/manifest.json\n(empty, sync_status: pending)
+        UI --> s : source added, sync pending ✓
+    end
+end
+@enduml
