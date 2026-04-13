@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:classhub/onboarding/services/onboarding_service.dart';
-import 'package:classhub/file_explorer/screens/file_explorer_screen.dart';
+import 'package:classhub/file_explorer/screens/main_screen.dart';
 
 class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({super.key});
@@ -9,9 +9,9 @@ class OnboardingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: FolderSelectionWrapper(
-        onComplete: () {
+        onComplete: (String path) {
           Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (_) => const FileExplorerScreen()),
+            MaterialPageRoute(builder: (_) => MainScreen(rootPath: path)),
           );
         },
       ),
@@ -20,7 +20,7 @@ class OnboardingScreen extends StatelessWidget {
 }
 
 class FolderSelectionWrapper extends StatefulWidget {
-  final VoidCallback onComplete;
+  final void Function(String path) onComplete;
   const FolderSelectionWrapper({super.key, required this.onComplete});
 
   @override
@@ -93,7 +93,7 @@ class _FolderSelectionWrapperState extends State<FolderSelectionWrapper> {
       isLoading: _isLoading,
       errorMessage: _errorMessage,
       onPickFolder: _handlePickFolder,
-      onNext: _selectedPath != null ? widget.onComplete : null,
+      onNext: _selectedPath != null ? () => widget.onComplete(_selectedPath!) : null,
     );
   }
 }
