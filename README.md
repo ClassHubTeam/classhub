@@ -115,7 +115,7 @@ _Coming soon._
 
 <br/>
 
-<div align="center">
+<div align="center" width="300px">
 
 ## Build from source
 
