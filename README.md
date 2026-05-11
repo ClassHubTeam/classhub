@@ -115,11 +115,13 @@ _Coming soon._
 
 <br/>
 
-<div align="center" width="300px">
+<div align="center">
 
 ## Build from source
 
 Requires [Nix](https://nixos.org/download) with flakes enabled.
+
+</div>
 
 ```
 git clone https://github.com/ClassHubTeam/classhub.git
@@ -129,7 +131,6 @@ flutter pub get
 flutter build apk --debug
 ```
 
-</div>
 
 <br/>
 
