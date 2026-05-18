@@ -1,7 +1,6 @@
 // test/integration/sync_engine_integration_test.dart
 import 'package:test/test.dart';
 import 'package:sync_engine/sync_engine.dart';
-import 'package:sync_engine/sync/models/source_config.dart';
 import 'dart:io';
 import 'dart:convert';
 import 'package:path/path.dart' as path;
@@ -127,11 +126,6 @@ void main() {
       final sourceConfigFile = File(
         path.join(sourceFolder.path, '.source', 'source.json'),
       );
-      final configContent = await sourceConfigFile.readAsString();
-      final config = SourceConfig.fromJson(
-        jsonDecode(configContent) as Map<String, dynamic>,
-      );
-      final firstCheckpoint = config.checkpoint;
 
       // Second sync (should be incremental)
       final secondSyncResult = await syncEngine.syncSource(sourceFolder);

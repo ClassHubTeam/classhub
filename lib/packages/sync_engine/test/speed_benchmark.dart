@@ -44,7 +44,6 @@ void main() async {
     syncEngineStopwatch.stop();
 
     final syncEngineTime = syncEngineStopwatch.elapsedMilliseconds;
-    final syncEngineSuccess = syncResult.success;
     final syncEngineFiles = syncResult.totalChanges;
 
     // Benchmark git clone

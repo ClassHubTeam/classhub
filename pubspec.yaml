@@ -45,7 +45,7 @@ dependencies:
   url_launcher: ^6.3.1
   http: ^1.2.1
   path_provider: ^2.1.2
-  path: ^1.9.0
+  path: ^1.9.1
   archive: ^4.0.9
   sync_engine:
     path: lib/packages/sync_engine
