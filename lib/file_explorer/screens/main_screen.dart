@@ -108,11 +108,12 @@ class _MainScreenState extends State<MainScreen>
 
   Future<void> _showWhatsNewIfNeeded() async {
     final lastSeen = await ClasshubStorageService.getLastSeenVersion();
-    if (lastSeen == null) {
+    if (lastSeen == appVersion) {
+      return;
+    } else if (lastSeen == null) {
       await ClasshubStorageService.saveLastSeenVersion(appVersion);
       return;
-    } else if (lastSeen == appVersion)
-      return;
+    }
     await ClasshubStorageService.saveLastSeenVersion(appVersion);
 
     final changelog = await loadFullChangelog();
@@ -150,7 +151,7 @@ class _MainScreenState extends State<MainScreen>
       final name = p.basename(source.path);
       await lockService.deleteLock(Directory(widget.rootPath), name);
     }
-
+    if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('Resuming downloads: $joined'),
@@ -201,7 +202,7 @@ class _MainScreenState extends State<MainScreen>
   Future<void> _addSingleSource(String url) async {
     final repoName = _getRepoName(url);
     final repoPath = p.join(widget.rootPath, repoName);
-    var _firstProgress = true;
+    var firstProgress = true;
 
     final trackerCallback = _syncTracker.start(repoPath);
     final syncEngine = SyncEngine(
@@ -209,8 +210,8 @@ class _MainScreenState extends State<MainScreen>
       githubToken: await ClasshubStorageService.getGithubToken(),
       onProgress: (progress) {
         if (!mounted) return;
-        if (_firstProgress) {
-          _firstProgress = false;
+        if (firstProgress) {
+          firstProgress = false;
           _loadEntries();
         }
         trackerCallback(progress);

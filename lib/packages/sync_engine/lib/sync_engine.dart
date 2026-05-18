@@ -1,5 +1,5 @@
 // Export the main SyncEngine class
-library sync_engine;
+//library sync_engine;
 
 export 'sync/models/file_delta.dart';
 export 'sync/models/source_config.dart';

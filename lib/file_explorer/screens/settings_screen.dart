@@ -49,6 +49,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Future<void> _changeTheme(ThemeMode mode) async {
     await ClasshubStorageService.saveThemeMode(mode);
     setState(() => _themeMode = mode);
+    if (!mounted) return;
     context.findAncestorStateOfType<ClasshubAppState>()?.updateTheme(mode);
   }
 

@@ -1,7 +1,7 @@
 // lib/sync/models/sync_queue.dart
 
 /// Status of an individual delta operation in the sync queue.
-enum DeltaStatus { pending, in_progress, done, failed }
+enum DeltaStatus { pending, inProgress, done, failed }
 
 /// Tracks a single delta operation in the sync queue.
 class SyncQueueDelta {

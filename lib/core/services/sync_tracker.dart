@@ -10,7 +10,6 @@ class SyncTracker {
   final SyncForegroundService _nativeService = SyncForegroundService();
   Timer? _throttleTimer;
   SyncProgress? _latestProgress;
-  String? _nativeSourcePath;
   bool _isTracking = false;
 
   final ValueNotifier<Map<String, SyncProgress>> progress = ValueNotifier({});
@@ -18,7 +17,6 @@ class SyncTracker {
   SyncProgressCallback start(String sourcePath) {
     _isTracking = true;
     _latestProgress = null;
-    _nativeSourcePath = sourcePath;
     final sourceName = p.basename(sourcePath);
     _nativeService.start(sourceName, 0);
 

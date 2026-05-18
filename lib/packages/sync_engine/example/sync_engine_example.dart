@@ -5,7 +5,6 @@ void main() async {
   // Initialize
   final appFolder = Directory('/tmp/classhub/');
   final syncEngine = SyncEngine(appFolder: appFolder, verbose: true);
-  final url = 'https://github.com/titanknis/nixos';
   late SyncResult syncResult;
 
   // Add a GitHub source
