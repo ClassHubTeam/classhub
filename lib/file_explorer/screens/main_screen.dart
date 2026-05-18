@@ -111,7 +111,8 @@ class _MainScreenState extends State<MainScreen>
     if (lastSeen == null) {
       await ClasshubStorageService.saveLastSeenVersion(appVersion);
       return;
-    } else if (lastSeen == appVersion) return;
+    } else if (lastSeen == appVersion)
+      return;
     await ClasshubStorageService.saveLastSeenVersion(appVersion);
 
     final changelog = await loadFullChangelog();
@@ -413,7 +414,7 @@ class _MainScreenState extends State<MainScreen>
         ...files.map((f) => XFile(f.path)),
         ...await _fileExplorerService.zipDirectories(dirs),
       ];
-      await Share.shareXFiles(xFiles);
+      await SharePlus.instance.share(ShareParams(files: xFiles));
       _cancelSelection();
       return;
     }
@@ -438,7 +439,7 @@ class _MainScreenState extends State<MainScreen>
       await _linkService.shareSheet(urls);
     } else {
       final xFiles = await _fileExplorerService.zipDirectories(dirs);
-      await Share.shareXFiles(xFiles);
+      await SharePlus.instance.share(ShareParams(files: xFiles));
     }
     _cancelSelection();
   }
@@ -517,10 +518,9 @@ class _MainScreenState extends State<MainScreen>
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (_) =>
-                          SettingsScreen(
-                            initialThemeMode: widget.initialThemeMode,
-                          ),
+                      builder: (_) => SettingsScreen(
+                        initialThemeMode: widget.initialThemeMode,
+                      ),
                     ),
                   );
                 },
@@ -1356,7 +1356,7 @@ class _InsideFolderScreenState extends State<_InsideFolderScreen>
         ...files.map((f) => XFile(f.path)),
         ...await _fileExplorerService.zipDirectories(dirs),
       ];
-      await Share.shareXFiles(xFiles);
+      await SharePlus.instance.share(ShareParams(files: xFiles));
       _cancelSelection();
       return;
     }
@@ -1382,7 +1382,7 @@ class _InsideFolderScreenState extends State<_InsideFolderScreen>
       await linkService.shareSheet(urls);
     } else {
       final xFiles = await _fileExplorerService.zipDirectories(dirs);
-      await Share.shareXFiles(xFiles);
+      await SharePlus.instance.share(ShareParams(files: xFiles));
     }
     _cancelSelection();
   }
@@ -1798,7 +1798,12 @@ void _showEntityMenu(
               title: const Text('Share file'),
               onTap: () {
                 Navigator.pop(ctx);
-                Share.shareXFiles([XFile(entity.path)]);
+                SharePlus.instance.share(
+                  ShareParams(
+                    text: 'Sharing ${p.basename(entity.path)}',
+                    files: [XFile(entity.path)],
+                  ),
+                );
               },
             ),
           if (entity is Directory)
@@ -1809,7 +1814,12 @@ void _showEntityMenu(
                 Navigator.pop(ctx);
                 final xFiles = await service.zipDirectories([entity]);
                 if (xFiles.isNotEmpty) {
-                  await Share.shareXFiles(xFiles);
+                  await SharePlus.instance.share(
+                    ShareParams(
+                      text: 'Sharing ${p.basename(entity.path)}',
+                      files: xFiles,
+                    ),
+                  );
                 }
               },
             ),

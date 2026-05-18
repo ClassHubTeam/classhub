@@ -95,7 +95,7 @@ int _countFiles(String directory) {
   try {
     return Directory(
       directory,
-    ).listSync(recursive: true).where((entity) => entity is File).length;
+    ).listSync(recursive: true).whereType<File>().length;
   } catch (e) {
     return 0;
   }
