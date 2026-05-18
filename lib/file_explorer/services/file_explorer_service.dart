@@ -87,10 +87,8 @@ class FileExplorerService {
           }
         }
         final data = ZipEncoder().encode(archive);
-        if (data != null) {
-          await File(zipPath).writeAsBytes(data);
-          results.add(XFile(zipPath));
-        }
+        await File(zipPath).writeAsBytes(data);
+        results.add(XFile(zipPath));
       } catch (_) {}
     }
     Future.delayed(const Duration(seconds: 30), () {

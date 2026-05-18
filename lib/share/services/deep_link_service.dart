@@ -31,7 +31,7 @@ class LinkService {
   /// Partage le lien via le système natif
   Future<void> shareSheet(List<String> urls) async {
     final link = buildAddSourcesDeepLinkString(urls);
-    await Share.share(link);
+    await SharePlus.instance.share(ShareParams(text: link));
   }
 
   /// Copie le lien dans le presse-papiers

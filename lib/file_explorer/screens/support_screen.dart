@@ -21,11 +21,7 @@ class SupportScreen extends StatelessWidget {
         padding: const EdgeInsets.all(24),
         children: [
           const SizedBox(height: 24),
-          Icon(
-            Icons.support,
-            size: 80,
-            color: theme.colorScheme.primary,
-          ),
+          Icon(Icons.support, size: 80, color: theme.colorScheme.primary),
           const SizedBox(height: 24),
           Text(
             'Support',
@@ -40,7 +36,8 @@ class SupportScreen extends StatelessWidget {
             title: const Text('Report a bug'),
             subtitle: const Text('GitHub Issues'),
             trailing: const Icon(Icons.open_in_new),
-            onTap: () => _openUrl('https://github.com/ClassHubTeam/classhub/issues'),
+            onTap: () =>
+                _openUrl('https://github.com/ClassHubTeam/classhub/issues'),
           ),
           ListTile(
             leading: const Icon(Icons.share),
@@ -55,9 +52,11 @@ class SupportScreen extends StatelessWidget {
   }
 
   Future<void> _shareApp() async {
-    await Share.share(
-      'Check out ClassHub: https://classhub.knisium.com',
-      subject: 'ClassHub',
+    await SharePlus.instance.share(
+      ShareParams(
+        text: 'Check out ClassHub: https://classhub.knisium.com',
+        subject: 'ClassHub',
+      ),
     );
   }
 
