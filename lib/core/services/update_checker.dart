@@ -28,7 +28,8 @@ Future<UpdateInfo?> checkForUpdate() async {
     final response = await http
         .get(
           Uri.parse(
-              'https://api.github.com/repos/ClassHubTeam/classhub/releases/latest'),
+            'https://api.github.com/repos/ClassHubTeam/classhub/releases/latest',
+          ),
           headers: headers,
         )
         .timeout(const Duration(seconds: 5));
@@ -52,7 +53,9 @@ Future<UpdateInfo?> checkForUpdate() async {
 
     if (apkUrl.isEmpty) return null;
 
-    final latestVersion = tagName.startsWith('v') ? tagName.substring(1) : tagName;
+    final latestVersion = tagName.startsWith('v')
+        ? tagName.substring(1)
+        : tagName;
 
     if (_isNewerVersion(latestVersion, appVersion)) {
       return UpdateInfo(

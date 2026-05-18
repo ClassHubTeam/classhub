@@ -97,10 +97,12 @@ class SyncQueue {
       deltas.where((d) => d.status != DeltaStatus.done).toList();
 
   /// Returns the count of completed deltas.
-  int get completedCount => deltas.where((d) => d.status == DeltaStatus.done).length;
+  int get completedCount =>
+      deltas.where((d) => d.status == DeltaStatus.done).length;
 
   /// Returns the count of pending deltas.
-  int get pendingCount => deltas.where((d) => d.status == DeltaStatus.pending).length;
+  int get pendingCount =>
+      deltas.where((d) => d.status == DeltaStatus.pending).length;
 
   /// Returns whether all deltas are complete.
   bool get isComplete => pendingCount == 0;
@@ -108,18 +110,16 @@ class SyncQueue {
   /// Returns progress as a fraction (0.0 to 1.0) by file count.
   double get progress => totalDeltas == 0 ? 1.0 : completedCount / totalDeltas;
 
-  int get totalBytes => deltas.where((d) => d.size != null).fold<int>(
-    0,
-    (sum, d) => sum + (d.size ?? 0),
-  );
+  int get totalBytes => deltas
+      .where((d) => d.size != null)
+      .fold<int>(0, (sum, d) => sum + (d.size ?? 0));
 
-  int get completedBytes =>
-      deltas.where((d) => d.status == DeltaStatus.done && d.size != null).fold<int>(
-        0,
-        (sum, d) => sum + d.size!,
-      );
+  int get completedBytes => deltas
+      .where((d) => d.status == DeltaStatus.done && d.size != null)
+      .fold<int>(0, (sum, d) => sum + d.size!);
 
-  double? get byteProgress => totalBytes == 0 ? null : completedBytes / totalBytes;
+  double? get byteProgress =>
+      totalBytes == 0 ? null : completedBytes / totalBytes;
 
   SyncQueue copyWith({List<SyncQueueDelta>? deltas}) {
     return SyncQueue(

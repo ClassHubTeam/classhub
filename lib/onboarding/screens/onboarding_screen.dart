@@ -15,10 +15,8 @@ class OnboardingScreen extends StatelessWidget {
       body: FolderSelectionWrapper(
         onComplete: (path) => Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: (_) => MainScreen(
-              rootPath: path,
-              initialThemeMode: ThemeMode.system,
-            ),
+            builder: (_) =>
+                MainScreen(rootPath: path, initialThemeMode: ThemeMode.system),
           ),
         ),
       ),

@@ -31,7 +31,9 @@ class _AboutScreenState extends State<AboutScreen> {
     if (mounted) {
       setState(() {
         _updateInfo = info;
-        _updateState = info != null ? _UpdateState.available : _UpdateState.none;
+        _updateState = info != null
+            ? _UpdateState.available
+            : _UpdateState.none;
       });
     }
   }
@@ -75,7 +77,8 @@ class _AboutScreenState extends State<AboutScreen> {
       } else {
         setState(() {
           _updateState = _UpdateState.error;
-          _errorMessage = 'Install permission denied. Enable "Install unknown apps" for ClassHub in Settings and try again.';
+          _errorMessage =
+              'Install permission denied. Enable "Install unknown apps" for ClassHub in Settings and try again.';
         });
       }
     }
@@ -114,7 +117,8 @@ class _AboutScreenState extends State<AboutScreen> {
                 ),
                 textAlign: TextAlign.center,
               ),
-              if (_updateInfo != null && _updateState == _UpdateState.available) ...[
+              if (_updateInfo != null &&
+                  _updateState == _UpdateState.available) ...[
                 const SizedBox(height: 4),
                 Text(
                   'Update available: ${_updateInfo!.latestVersion}',
@@ -251,7 +255,8 @@ class _AboutScreenState extends State<AboutScreen> {
               ),
             ),
           ],
-          if (_updateInfo != null && _updateState == _UpdateState.available) ...[
+          if (_updateInfo != null &&
+              _updateState == _UpdateState.available) ...[
             const SizedBox(height: 8),
             ListTile(
               leading: const Icon(Icons.open_in_new),
