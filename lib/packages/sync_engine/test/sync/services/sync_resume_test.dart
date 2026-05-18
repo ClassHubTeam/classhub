@@ -38,28 +38,40 @@ class FailingHttpClient implements http.Client {
   void close() {}
 
   @override
-  Future<http.Response> delete(Uri url,
-          {Map<String, String>? headers, Object? body, Encoding? encoding}) =>
-      throw UnimplementedError();
+  Future<http.Response> delete(
+    Uri url, {
+    Map<String, String>? headers,
+    Object? body,
+    Encoding? encoding,
+  }) => throw UnimplementedError();
 
   @override
   Future<http.Response> head(Uri url, {Map<String, String>? headers}) =>
       throw UnimplementedError();
 
   @override
-  Future<http.Response> patch(Uri url,
-          {Map<String, String>? headers, Object? body, Encoding? encoding}) =>
-      throw UnimplementedError();
+  Future<http.Response> patch(
+    Uri url, {
+    Map<String, String>? headers,
+    Object? body,
+    Encoding? encoding,
+  }) => throw UnimplementedError();
 
   @override
-  Future<http.Response> post(Uri url,
-          {Map<String, String>? headers, Object? body, Encoding? encoding}) =>
-      throw UnimplementedError();
+  Future<http.Response> post(
+    Uri url, {
+    Map<String, String>? headers,
+    Object? body,
+    Encoding? encoding,
+  }) => throw UnimplementedError();
 
   @override
-  Future<http.Response> put(Uri url,
-          {Map<String, String>? headers, Object? body, Encoding? encoding}) =>
-      throw UnimplementedError();
+  Future<http.Response> put(
+    Uri url, {
+    Map<String, String>? headers,
+    Object? body,
+    Encoding? encoding,
+  }) => throw UnimplementedError();
 }
 
 class MockHttpClient implements http.Client {
@@ -85,28 +97,40 @@ class MockHttpClient implements http.Client {
   void close() {}
 
   @override
-  Future<http.Response> delete(Uri url,
-          {Map<String, String>? headers, Object? body, Encoding? encoding}) =>
-      throw UnimplementedError();
+  Future<http.Response> delete(
+    Uri url, {
+    Map<String, String>? headers,
+    Object? body,
+    Encoding? encoding,
+  }) => throw UnimplementedError();
 
   @override
   Future<http.Response> head(Uri url, {Map<String, String>? headers}) =>
       throw UnimplementedError();
 
   @override
-  Future<http.Response> patch(Uri url,
-          {Map<String, String>? headers, Object? body, Encoding? encoding}) =>
-      throw UnimplementedError();
+  Future<http.Response> patch(
+    Uri url, {
+    Map<String, String>? headers,
+    Object? body,
+    Encoding? encoding,
+  }) => throw UnimplementedError();
 
   @override
-  Future<http.Response> post(Uri url,
-          {Map<String, String>? headers, Object? body, Encoding? encoding}) =>
-      throw UnimplementedError();
+  Future<http.Response> post(
+    Uri url, {
+    Map<String, String>? headers,
+    Object? body,
+    Encoding? encoding,
+  }) => throw UnimplementedError();
 
   @override
-  Future<http.Response> put(Uri url,
-          {Map<String, String>? headers, Object? body, Encoding? encoding}) =>
-      throw UnimplementedError();
+  Future<http.Response> put(
+    Uri url, {
+    Map<String, String>? headers,
+    Object? body,
+    Encoding? encoding,
+  }) => throw UnimplementedError();
 }
 
 class FakeSyncer implements SourceSyncer {
@@ -135,66 +159,97 @@ void main() {
       }
     });
 
-    test('resumes from queue after interrupt, skipping completed files', () async {
-      const url = 'https://github.com/owner/repo';
+    test(
+      'resumes from queue after interrupt, skipping completed files',
+      () async {
+        const url = 'https://github.com/owner/repo';
 
-      final deltas = [
-        FileDelta(relativePath: 'a.txt', type: DeltaType.add, downloadUrl: 'https://example.com/a.txt'),
-        FileDelta(relativePath: 'b.txt', type: DeltaType.add, downloadUrl: 'https://example.com/b.txt'),
-        FileDelta(relativePath: 'c.txt', type: DeltaType.add, downloadUrl: 'https://example.com/c.txt'),
-        FileDelta(relativePath: 'd.txt', type: DeltaType.add, downloadUrl: 'https://example.com/d.txt'),
-      ];
+        final deltas = [
+          FileDelta(
+            relativePath: 'a.txt',
+            type: DeltaType.add,
+            downloadUrl: 'https://example.com/a.txt',
+          ),
+          FileDelta(
+            relativePath: 'b.txt',
+            type: DeltaType.add,
+            downloadUrl: 'https://example.com/b.txt',
+          ),
+          FileDelta(
+            relativePath: 'c.txt',
+            type: DeltaType.add,
+            downloadUrl: 'https://example.com/c.txt',
+          ),
+          FileDelta(
+            relativePath: 'd.txt',
+            type: DeltaType.add,
+            downloadUrl: 'https://example.com/d.txt',
+          ),
+        ];
 
-      final fakeSyncer = FakeSyncer(deltas, 'abc123');
+        final fakeSyncer = FakeSyncer(deltas, 'abc123');
 
-      // First attempt: fail after 2 downloads (simulating interrupt)
-      final failingClient = FailingHttpClient(2);
-      final engine1 = SyncEngine(
-        appFolder: appFolder,
-        parsers: [_FakeParser(url)],
-        syncers: {SourceType.github: fakeSyncer},
-        fileWriter: FileWriter(httpClient: failingClient),
-      );
+        // First attempt: fail after 2 downloads (simulating interrupt)
+        final failingClient = FailingHttpClient(2);
+        final engine1 = SyncEngine(
+          appFolder: appFolder,
+          parsers: [_FakeParser(url)],
+          syncers: {SourceType.github: fakeSyncer},
+          fileWriter: FileWriter(httpClient: failingClient),
+        );
 
-      var result = await engine1.addSource(url);
-      expect(result.success, isFalse);
+        var result = await engine1.addSource(url);
+        expect(result.success, isFalse);
 
-      // Verify queue was persisted with partial progress
-      final sourceFolder = Directory('${appFolder.path}/repo');
-      expect(sourceFolder.existsSync(), isTrue);
+        // Verify queue was persisted with partial progress
+        final sourceFolder = Directory('${appFolder.path}/repo');
+        expect(sourceFolder.existsSync(), isTrue);
 
-      // Second attempt: should resume with only pending deltas (c.txt, d.txt)
-      final completeClient = MockHttpClient();
-      final engine2 = SyncEngine(
-        appFolder: appFolder,
-        parsers: [_FakeParser(url)],
-        syncers: {SourceType.github: fakeSyncer},
-        fileWriter: FileWriter(httpClient: completeClient),
-      );
+        // Second attempt: should resume with only pending deltas (c.txt, d.txt)
+        final completeClient = MockHttpClient();
+        final engine2 = SyncEngine(
+          appFolder: appFolder,
+          parsers: [_FakeParser(url)],
+          syncers: {SourceType.github: fakeSyncer},
+          fileWriter: FileWriter(httpClient: completeClient),
+        );
 
-      result = await engine2.addSource(url);
-      expect(result.success, isTrue);
-      // Only 2 files should be downloaded on resume (c.txt, d.txt)
-      expect(result.totalChanges, equals(2));
+        result = await engine2.addSource(url);
+        expect(result.success, isTrue);
+        // Only 2 files should be downloaded on resume (c.txt, d.txt)
+        expect(result.totalChanges, equals(2));
 
-      // Verify all files exist in final folder
-      final finalFolder = Directory('${appFolder.path}/repo');
-      expect(File('${finalFolder.path}/a.txt').existsSync(), isTrue);
-      expect(File('${finalFolder.path}/b.txt').existsSync(), isTrue);
-      expect(File('${finalFolder.path}/c.txt').existsSync(), isTrue);
-      expect(File('${finalFolder.path}/d.txt').existsSync(), isTrue);
-    });
+        // Verify all files exist in final folder
+        final finalFolder = Directory('${appFolder.path}/repo');
+        expect(File('${finalFolder.path}/a.txt').existsSync(), isTrue);
+        expect(File('${finalFolder.path}/b.txt').existsSync(), isTrue);
+        expect(File('${finalFolder.path}/c.txt').existsSync(), isTrue);
+        expect(File('${finalFolder.path}/d.txt').existsSync(), isTrue);
+      },
+    );
 
     test('syncer is NOT called on resume', () async {
       const url = 'https://github.com/owner/repo';
 
       final deltas = [
-        FileDelta(relativePath: 'a.txt', type: DeltaType.add, downloadUrl: 'https://example.com/a.txt'),
-        FileDelta(relativePath: 'b.txt', type: DeltaType.add, downloadUrl: 'https://example.com/b.txt'),
+        FileDelta(
+          relativePath: 'a.txt',
+          type: DeltaType.add,
+          downloadUrl: 'https://example.com/a.txt',
+        ),
+        FileDelta(
+          relativePath: 'b.txt',
+          type: DeltaType.add,
+          downloadUrl: 'https://example.com/b.txt',
+        ),
       ];
 
       var syncerCallCount = 0;
-      final fakeSyncer = _CountingSyncer(deltas, 'abc123', () => syncerCallCount++);
+      final fakeSyncer = _CountingSyncer(
+        deltas,
+        'abc123',
+        () => syncerCallCount++,
+      );
 
       // First attempt: fail after 1 download
       final failingClient = FailingHttpClient(1);
@@ -208,7 +263,10 @@ void main() {
       await engine1.addSource(url);
 
       final syncerCallsBeforeResume = syncerCallCount;
-      expect(syncerCallsBeforeResume, equals(1)); // called once on first attempt
+      expect(
+        syncerCallsBeforeResume,
+        equals(1),
+      ); // called once on first attempt
 
       // Second attempt: should NOT call the syncer (uses existing queue)
       final completeClient = MockHttpClient();

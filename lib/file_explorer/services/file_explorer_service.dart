@@ -51,7 +51,9 @@ class FileExplorerService {
   bool isInsideSource(String path, String rootPath) {
     if (isSyncedSource(path)) return true;
     String? current = p.dirname(path);
-    while (current != null && current != rootPath && current != p.dirname(current)) {
+    while (current != null &&
+        current != rootPath &&
+        current != p.dirname(current)) {
       if (isSyncedSource(current)) return true;
       current = p.dirname(current);
     }
@@ -149,7 +151,8 @@ class FileExplorerService {
   int countChildren(FileSystemEntity entity) {
     if (entity is Directory) {
       try {
-        return entity.listSync()
+        return entity
+            .listSync()
             .where((e) => !p.basename(e.path).startsWith('.'))
             .length;
       } catch (_) {

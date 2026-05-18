@@ -131,4 +131,3 @@ class _FeatureCard extends StatelessWidget {
     );
   }
 }
-

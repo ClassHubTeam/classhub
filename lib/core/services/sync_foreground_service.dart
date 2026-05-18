@@ -3,7 +3,8 @@ import 'package:flutter/services.dart';
 
 class SyncForegroundService {
   static const _channel = MethodChannel('com.knisium.classhub/sync_service');
-  static final SyncForegroundService _instance = SyncForegroundService._internal();
+  static final SyncForegroundService _instance =
+      SyncForegroundService._internal();
 
   factory SyncForegroundService() => _instance;
   SyncForegroundService._internal();

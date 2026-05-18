@@ -29,7 +29,8 @@ class ClasshubStorageService {
     if (Platform.isAndroid) {
       try {
         final base = await _storageChannel.invokeMethod<String>(
-            'getExternalStorageDirectory');
+          'getExternalStorageDirectory',
+        );
         if (base != null && base.isNotEmpty) return p.join(base, 'ClassHub');
       } catch (_) {}
       return '/storage/emulated/0/ClassHub';

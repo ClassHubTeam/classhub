@@ -61,7 +61,9 @@ class SyncEngine {
        _queueService = queueService ?? SyncQueueService(),
        _lockService = lockService ?? LockService(),
        _parsers = parsers ?? [GithubParser(HttpClient(token: githubToken))],
-       _syncers = syncers ?? {SourceType.github: GithubSyncer(HttpClient(token: githubToken))};
+       _syncers =
+           syncers ??
+           {SourceType.github: GithubSyncer(HttpClient(token: githubToken))};
 
   /// Scans a root directory for sources with interrupted syncs.
   ///
@@ -130,9 +132,7 @@ class SyncEngine {
   }
 
   /// Performs the sync operation for an existing source.
-  Future<SyncResult> syncSource(
-    Directory sourceFolder,
-  ) async {
+  Future<SyncResult> syncSource(Directory sourceFolder) async {
     try {
       final sourceFolderName = sourceFolder.uri.pathSegments
           .where((s) => s.isNotEmpty)

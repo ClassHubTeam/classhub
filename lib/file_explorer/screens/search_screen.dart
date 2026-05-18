@@ -147,8 +147,8 @@ class _SearchScreenState extends State<SearchScreen> {
       body: showRecent
           ? _buildRecentSearches()
           : _hasSearched
-              ? _buildResults()
-              : _buildEmptyPrompt(),
+          ? _buildResults()
+          : _buildEmptyPrompt(),
     );
   }
 
@@ -279,7 +279,10 @@ class _SearchScreenState extends State<SearchScreen> {
                       color: colorScheme.primaryContainer,
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: Icon(info.icon, color: colorScheme.onPrimaryContainer),
+                    child: Icon(
+                      info.icon,
+                      color: colorScheme.onPrimaryContainer,
+                    ),
                   ),
                   const SizedBox(width: 14),
                   Expanded(
@@ -353,10 +356,7 @@ class _FilterChip extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             if (icon != null) ...[
-              Icon(
-                icon,
-                size: 16,
-              ),
+              Icon(icon, size: 16),
               const SizedBox(width: 6),
             ],
             Text(

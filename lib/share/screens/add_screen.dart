@@ -76,10 +76,7 @@ class _AddSourceDialogState extends State<AddSourceDialog> {
       _showSnack('Select at least one source');
       return;
     }
-    Navigator.pop(
-      context,
-      _selected.map((i) => _urls[i]).toList(),
-    );
+    Navigator.pop(context, _selected.map((i) => _urls[i]).toList());
   }
 
   String _getRepoName(String url) {
@@ -91,9 +88,9 @@ class _AddSourceDialogState extends State<AddSourceDialog> {
   }
 
   void _showSnack(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message)));
   }
 
   @override

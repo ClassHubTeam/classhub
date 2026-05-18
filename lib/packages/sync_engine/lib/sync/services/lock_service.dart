@@ -8,11 +8,16 @@ class LockService {
     return '${parentDir.path}/.$sourceFolderName$_lockSuffix';
   }
 
-  bool hasStale(Directory parentDir, String sourceFolderName, Duration staleness) {
+  bool hasStale(
+    Directory parentDir,
+    String sourceFolderName,
+    Duration staleness,
+  ) {
     final lockFile = File(_lockPath(parentDir, sourceFolderName));
     if (!lockFile.existsSync()) return false;
     try {
-      final json = jsonDecode(lockFile.readAsStringSync()) as Map<String, dynamic>;
+      final json =
+          jsonDecode(lockFile.readAsStringSync()) as Map<String, dynamic>;
       final lockedAt = DateTime.parse(json['locked_at'] as String);
       final age = DateTime.now().difference(lockedAt);
       return age >= staleness;
@@ -32,11 +37,16 @@ class LockService {
     }
   }
 
-  bool tryAcquire(Directory parentDir, String sourceFolderName, Duration staleness) {
+  bool tryAcquire(
+    Directory parentDir,
+    String sourceFolderName,
+    Duration staleness,
+  ) {
     final lockFile = File(_lockPath(parentDir, sourceFolderName));
     if (lockFile.existsSync()) {
       try {
-        final json = jsonDecode(lockFile.readAsStringSync()) as Map<String, dynamic>;
+        final json =
+            jsonDecode(lockFile.readAsStringSync()) as Map<String, dynamic>;
         final lockedAt = DateTime.parse(json['locked_at'] as String);
         final age = DateTime.now().difference(lockedAt);
         if (age < staleness) return false;
@@ -64,7 +74,9 @@ class LockService {
 
   void _writeLock(Directory parentDir, String sourceFolderName) {
     final lockFile = File(_lockPath(parentDir, sourceFolderName));
-    final json = jsonEncode({'locked_at': DateTime.now().toUtc().toIso8601String()});
+    final json = jsonEncode({
+      'locked_at': DateTime.now().toUtc().toIso8601String(),
+    });
     lockFile.writeAsStringSync(json, flush: true);
   }
 }

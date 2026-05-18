@@ -24,7 +24,8 @@ class FileWriterResult {
 
 /// Callback type for file-level progress updates.
 /// [relativePath] is the file being processed, [operation] is 'add', 'update', or 'delete'.
-typedef FileProgressCallback = Future<void> Function(String relativePath, String operation);
+typedef FileProgressCallback =
+    Future<void> Function(String relativePath, String operation);
 
 /// Applies a [List<FileDelta>] to a local folder on disk.
 ///

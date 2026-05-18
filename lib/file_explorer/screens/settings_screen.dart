@@ -6,10 +6,7 @@ import 'package:file_picker/file_picker.dart';
 class SettingsScreen extends StatefulWidget {
   final ThemeMode initialThemeMode;
 
-  const SettingsScreen({
-    super.key,
-    required this.initialThemeMode,
-  });
+  const SettingsScreen({super.key, required this.initialThemeMode});
 
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
@@ -77,8 +74,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             Text(
               'Optional - avoids GitHub API rate limits for updates and syncing.',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  ),
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
             ),
           ],
         ),
@@ -98,7 +95,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
     if (result == true) {
       final newToken = controller.text.trim();
       await ClasshubStorageService.saveGithubToken(
-          newToken.isEmpty ? null : newToken);
+        newToken.isEmpty ? null : newToken,
+      );
       setState(() => _githubToken = newToken);
     }
   }

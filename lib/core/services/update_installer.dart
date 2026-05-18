@@ -38,7 +38,9 @@ class UpdateInstaller {
         final response = await client.send(request);
 
         if (response.statusCode != 200) {
-          debugPrint('[UpdateInstaller] Download failed: ${response.statusCode}');
+          debugPrint(
+            '[UpdateInstaller] Download failed: ${response.statusCode}',
+          );
           _nativeService.stop();
           return null;
         }
@@ -75,9 +77,13 @@ class UpdateInstaller {
 
         if (totalSize > 0) {
           final actualSize = apkFile.lengthSync();
-          debugPrint('[UpdateInstaller] Downloaded: $actualSize / $totalSize bytes');
+          debugPrint(
+            '[UpdateInstaller] Downloaded: $actualSize / $totalSize bytes',
+          );
           if (actualSize != totalSize) {
-            debugPrint('[UpdateInstaller] Size mismatch after download, deleting');
+            debugPrint(
+              '[UpdateInstaller] Size mismatch after download, deleting',
+            );
             await apkFile.delete();
             _nativeService.stop();
             return null;
@@ -132,7 +138,9 @@ class UpdateInstaller {
     }
 
     final result = await OpenFile.open(apkPath);
-    debugPrint('[UpdateInstaller] Install result: ${result.type} - ${result.message}');
+    debugPrint(
+      '[UpdateInstaller] Install result: ${result.type} - ${result.message}',
+    );
 
     final success = result.type == ResultType.done;
 
