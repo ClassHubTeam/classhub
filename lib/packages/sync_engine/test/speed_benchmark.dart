@@ -6,9 +6,9 @@ void main() async {
   // Repositories to test
   final repos = [
     'https://github.com/octocat/Hello-World',
-    'https://github.com/aliknis/my-coach',
-    'https://github.com/aliknis/nixos',
-    // 'https://github.com/aliknis/ISIMM-L2-Info-Cours/tree/main/Semestre2',
+    'https://github.com/titanknis/my-coach',
+    'https://github.com/titanknis/nixos',
+    // 'https://github.com/titanknis/ISIMM-L2-Info-Cours/tree/main/Semestre2',
   ];
 
   // Create temporary directories
