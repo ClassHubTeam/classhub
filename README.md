@@ -82,16 +82,13 @@ Classhub is a free and open source Android app that fetches files from remote so
 
 ## Screenshots
 
-<div align="center">
-
-<img src="assets/screenshots/1-home_screen.png" alt="Home screen" width="30%" />
-<img src="assets/screenshots/2-add_source.png" alt="Add source" width="30%" />
-<img src="assets/screenshots/3-sync_source.png" alt="Sync source" width="30%" />
-<img src="assets/screenshots/4-browse.png" alt="Browse" width="30%" />
-<img src="assets/screenshots/5-quick_search.png" alt="Quick search" width="30%" />
-<img src="assets/screenshots/6-open_document.png" alt="Open document" width="30%" />
+_Coming soon._
 
 </div>
+
+<br/>
+
+<div align="center">
 
 ## Download
 
@@ -133,6 +130,7 @@ nix develop
 flutter pub get
 flutter build apk --debug
 ```
+
 
 <br/>
 
