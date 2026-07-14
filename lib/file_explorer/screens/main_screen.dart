@@ -334,7 +334,7 @@ class _MainScreenState extends State<MainScreen>
 
   Future<void> _uploadFiles() async {
     _toggleFab();
-    final result = await FilePicker.pickFiles(allowMultiple: true);
+    final result = await FilePicker.pickFiles();
     if (result != null && result.files.isNotEmpty) {
       final paths = result.files
           .where((pf) => pf.path != null)
@@ -1240,7 +1240,7 @@ class _InsideFolderScreenState extends State<_InsideFolderScreen>
 
   Future<void> _uploadFiles() async {
     _toggleFab();
-    final result = await FilePicker.pickFiles(allowMultiple: true);
+    final result = await FilePicker.pickFiles();
     if (result != null && result.files.isNotEmpty) {
       final paths = result.files
           .where((pf) => pf.path != null)
