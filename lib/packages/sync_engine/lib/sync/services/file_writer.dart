@@ -138,7 +138,9 @@ class FileWriter {
       // Ensure the sink is closed before attempting deletion; ignore secondary
       // errors so the original exception is the one that propagates.
       await sink.close().catchError((_) {});
-      await tmp.delete().catchError((_) => tmp);
+      try {
+        await tmp.delete();
+      } catch (_) {}
       rethrow;
     }
   }
