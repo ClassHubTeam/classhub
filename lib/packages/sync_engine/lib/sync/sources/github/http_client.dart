@@ -21,7 +21,7 @@ class HttpClient {
   };
 
   /// Fetches [url] and returns the decoded JSON body as a map.
-  /// Throws [HttpException] on non-200 responses.
+  /// Throws [HttpException] on non-200 responses or JSON parsing errors.
   Future<Map<String, dynamic>> getJson(String url) async {
     final response = await _client.get(Uri.parse(url), headers: _headers);
 
@@ -35,8 +35,17 @@ class HttpClient {
       );
     }
 
-    return await Isolate.run(
-      () => jsonDecode(response.body) as Map<String, dynamic>,
-    );
+    try {
+      final result = await Isolate.run(
+        () => jsonDecode(response.body) as Map<String, dynamic>,
+      );
+      return result;
+    } catch (e) {
+      throw HttpException(
+        'Failed to parse JSON for $url: $e',
+      );
+    }
   }
+
+  void close() => _client.close();
 }
