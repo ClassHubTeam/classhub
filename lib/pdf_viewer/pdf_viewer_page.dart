@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:open_file/open_file.dart';
 import 'pdf_viewer_widget.dart';
 import 'pdf_controller.dart';
 import 'dart:async';
@@ -66,6 +67,11 @@ class _PdfViewerPageState extends State<PdfViewerPage> {
         onViewCreated: (viewId) {
           _pdfController.attachChannel(viewId);
         },
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => OpenFile.open(widget.filePath),
+        icon: const Icon(Icons.open_in_new),
+        label: const Text('Open externally'),
       ),
     );
   }
